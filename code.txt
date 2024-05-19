@@ -162,4 +162,98 @@ student.index
         </div>
     </form>
 @endsection
-s
+
+
+//StudentController
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\student;
+use Illuminate\Http\Request;
+
+class StudentController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $students = student::all();
+        return view('pages.Student.index',compact('students'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('pages.Student.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'roll_no' => 'required',
+            'faculty' => 'required',
+        ]);
+
+        $student = new student();
+        $student->name = $request->name;
+        $student->roll_no = $request->roll_no;
+        $student->faculty = $request->faculty;
+        $student->save();
+        return redirect('/student')->with('success', 'Student Added Successfully');
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $student = student::find($id);
+        return view('pages.Student.update',compact('student'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'roll_no' => 'required',
+            'faculty' => 'required',
+        ]);
+
+        $student = student::find($id);
+        $student->name = $request->name;
+        $student->roll_no = $request->roll_no;
+        $student->faculty = $request->faculty;
+        $student->update();
+        return redirect('/student')->with('success', 'Student Updated Successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $student = student::find($id);
+        $student->delete();
+        return redirect('/student')->with('success', 'Student Deleted Successfully');
+    }
+}
