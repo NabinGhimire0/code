@@ -381,3 +381,9 @@ $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade')
         
 
 
+web.php
+Route::get('/dashboard', function () {
+    //fetch post with comments
+    $posts = Post::with('comments')->get();
+    return view('dashboard', compact('posts'));
+})->middleware(['auth', 'verified'])->name('dashboard');
