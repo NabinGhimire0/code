@@ -387,3 +387,6 @@ Route::get('/dashboard', function () {
     $posts = Post::with('comments')->get();
     return view('dashboard', compact('posts'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('posts',PostController::class);
+Route::resource('comments',CommentController::class);
